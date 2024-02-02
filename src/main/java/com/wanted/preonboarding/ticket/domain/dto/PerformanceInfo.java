@@ -11,27 +11,29 @@ import java.util.UUID;
 @Data
 @Builder
 public class PerformanceInfo {
-    private UUID performanceId;
-    private String performanceName;
-    private String performanceType;
-    private Date startDate;
-    private String isReserve;
+  private UUID performanceId;
+  private String performanceName;
+  private String performanceType;
+  private Date startDate;
+  private String isReserve;
+  private int round;
 
-    public static PerformanceInfo of(Performance entity) {
-        return PerformanceInfo.builder()
+  public static PerformanceInfo of(Performance entity) {
+    return PerformanceInfo.builder()
             .performanceId(entity.getId())
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))
             .startDate(entity.getStart_date())
             .isReserve(entity.getIsReserve())
+            .round(entity.getRound())
             .build();
-    }
+  }
 
-    private static String convertCodeToName(int code){
-        return Arrays.stream(PerformanceType.values()).filter(value -> value.getCategory() == code)
+  private static String convertCodeToName(int code) {
+    return Arrays.stream(PerformanceType.values()).filter(value -> value.getCategory() == code)
             .findFirst()
             .orElse(PerformanceType.NONE)
             .name();
-    }
+  }
 
 }

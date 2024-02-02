@@ -22,8 +22,9 @@ public class TicketSeller {
     private final ReservationRepository reservationRepository;
     private long totalAmount = 0L;
 
-    public List<PerformanceInfo> getAllPerformanceInfoList() {
-        return performanceRepository.findByIsReserve("enable")
+    public List<PerformanceInfo> getAllPerformanceInfoList(boolean isReserve) {
+        String status = isReserve ? "enable" : "disable";
+        return performanceRepository.findByIsReserve(status)
             .stream()
             .map(PerformanceInfo::of)
             .toList();
@@ -33,6 +34,8 @@ public class TicketSeller {
         return PerformanceInfo.of(performanceRepository.findByName(name));
     }
 
+
+    // 문제1
     public ReserveResDto reserve(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
         Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
@@ -52,6 +55,7 @@ public class TicketSeller {
         }
     }
 
+    // 문제2
     public ReserveResDto getPerformanceInfoByReservationName(String name, String contact) {
         Reservation reserveInfo = reservationRepository.findByNameAndPhoneNumber(name, contact);
         Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())

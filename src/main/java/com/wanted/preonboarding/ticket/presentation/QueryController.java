@@ -24,23 +24,25 @@ public class QueryController {
     private final TicketSeller ticketSeller;
 
     @GetMapping("/all/performance")
-    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
-        System.out.println("getAllPerformanceInfoList");
+    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList(@RequestParam boolean isReserve) {
+        List<PerformanceInfo> list = ticketSeller.getAllPerformanceInfoList(isReserve);
+
+        System.out.println("getAllPerformanceInfoList " + isReserve);
+
         return ResponseEntity
             .ok()
             .body(ResponseHandler.<List<PerformanceInfo>>builder()
                 .message("Success")
                 .statusCode(HttpStatus.OK)
-                .data(ticketSeller.getAllPerformanceInfoList())
+                .data(list)
                 .build()
             );
     }
 
     @GetMapping("/performance")
     public ReserveResDto getPerformanceByUserData(@RequestParam String name, @RequestParam String contact) {
-        log.info("name: {}", name);
-        log.info("contact: {}", contact);
-
         return ticketSeller.getPerformanceInfoByReservationName(name, contact);
     }
+
+
 }
