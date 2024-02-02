@@ -3,12 +3,14 @@ package com.wanted.preonboarding.ticket.domain.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Getter
 @Setter
+@ToString
 @Builder
 public class ReserveInfo {
     // 공연 및 전시 정보 + 예약자 정보
