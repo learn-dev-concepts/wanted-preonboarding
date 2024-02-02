@@ -39,3 +39,6 @@ out/
 ### Docker ####
 Dockerfile_bak
 
+/mysql_data/
+
+docker-compose.yml
