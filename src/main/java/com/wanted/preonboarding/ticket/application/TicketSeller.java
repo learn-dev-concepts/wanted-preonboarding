@@ -52,4 +52,11 @@ public class TicketSeller {
         }
     }
 
+    public ReserveResDto getPerformanceInfoByReservationName(String name, String contact) {
+        Reservation reserveInfo = reservationRepository.findByNameAndPhoneNumber(name, contact);
+        Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
+                .orElseThrow(EntityNotFoundException::new);
+        return ReserveResDto.of(info, reserveInfo);
+    }
+
 }
