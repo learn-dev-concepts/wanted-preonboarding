@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -30,8 +31,11 @@ public class TicketSeller {
             .toList();
     }
 
-    public PerformanceInfo getPerformanceInfoDetail(String name) {
-        return PerformanceInfo.of(performanceRepository.findByName(name));
+    public PerformanceInfo getPerformanceInfoDetail(UUID id) {
+        Performance info = performanceRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+
+        return PerformanceInfo.of(info);
     }
 
 
