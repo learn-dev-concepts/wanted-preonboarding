@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.application.pay.DefaultPayMethod;
+import com.wanted.preonboarding.ticket.application.pay.PayMethod;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveResDto;
@@ -25,6 +27,8 @@ public class TicketSeller {
     private final PerformanceRepository performanceRepository;
     private final ReservationRepository reservationRepository;
     private final AlarmRepository alarmRepository;
+
+    private final DefaultPayMethod payMethod;
     private long totalAmount = 0L;
 
     public List<PerformanceInfo> getAllPerformanceInfoList(boolean isReserve) {
@@ -52,8 +56,9 @@ public class TicketSeller {
         String enableReserve = info.getIsReserve();
         if (enableReserve.equalsIgnoreCase("enable")) {
             // 1. 결제
-            int price = info.getPrice();
-            reserveInfo.setAmount(reserveInfo.getAmount() - price);
+
+            int amount = payMethod.pay(reserveInfo.getAmount(), info.getPrice());
+            reserveInfo.setAmount(amount);
             // 2. 예매 진행
             reservationRepository.save(Reservation.of(reserveInfo));
             return ReserveResDto.of(info, reserveInfo);
@@ -62,6 +67,8 @@ public class TicketSeller {
             return null;
         }
     }
+
+
 
     // 문제2
     public ReserveResDto getPerformanceInfoByReservationName(String name, String contact) {
