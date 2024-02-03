@@ -32,4 +32,9 @@ public class ReserveController {
                     .build());
   }
 
+
+  @DeleteMapping("/{id}")
+  public void deleteReservation(@PathVariable UUID id) {
+    ticketSeller.cancelReservation(id);
+  }
 }

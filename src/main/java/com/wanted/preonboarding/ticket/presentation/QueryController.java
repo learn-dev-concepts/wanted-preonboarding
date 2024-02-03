@@ -54,5 +54,4 @@ public class QueryController {
         return ticketSeller.getPerformanceInfoByReservationName(name, contact);
     }
 
-
 }
